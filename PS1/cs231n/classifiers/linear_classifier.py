@@ -6,6 +6,7 @@ class LinearClassifier:
 
   def __init__(self):
     self.W = None
+    np.random.seed(123)
 
   def train(self, X, y, learning_rate=1e-3, reg=1e-5, num_iters=100,
             batch_size=200, verbose=False):
@@ -48,7 +49,9 @@ class LinearClassifier:
       # Hint: Use np.random.choice to generate indices. Sampling with         #
       # replacement is faster than sampling without replacement.              #
       #########################################################################
-      pass
+      batch = np.random.choice(num_train, size=batch_size, replace=True)
+      X_batch = X[:, batch]
+      y_batch = y[batch]
       #########################################################################
       #                       END OF YOUR CODE                                #
       #########################################################################
@@ -62,12 +65,12 @@ class LinearClassifier:
       # TODO:                                                                 #
       # Update the weights using the gradient and the learning rate.          #
       #########################################################################
-      pass
+      self.W -= learning_rate * grad      
       #########################################################################
       #                       END OF YOUR CODE                                #
       #########################################################################
 
-      if verbose and it % 100 == 0:
+      if verbose and it % 500 == 0:
         print 'iteration %d / %d: loss %f' % (it, num_iters, loss)
 
     return loss_history
@@ -90,7 +93,9 @@ class LinearClassifier:
     # TODO:                                                                   #
     # Implement this method. Store the predicted labels in y_pred.            #
     ###########################################################################
-    pass
+    scores = self.W.dot(X)
+    y_pred = np.argmax(scores, axis=0)
+    assert len(y_pred) ==    X.shape[1]
     ###########################################################################
     #                           END OF YOUR CODE                              #
     ###########################################################################
